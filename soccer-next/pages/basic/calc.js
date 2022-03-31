@@ -13,14 +13,23 @@ export default function Calc(){
         }
         const handleClick = (e) =>{
             e.preventDefault()
-            memberCalc({num1, opcode ,num2})
-            .then(res => setRes(res.data)).catch( err => console.log(`에러발생 : ${err}`))
+            switch(opcode){
+                case "+":
+                    return setRes(`${num1} + ${num2} = ${Number(num1) + Number(num2)}`)
+                case "-":
+                    return setRes(`${num1} - ${num2} = ${Number(num1) - Number(num2)}`)
+                case "*":
+                    return setRes(`${num1} * ${num2} = ${Number(num1) * Number(num2)}`)                 
+                case "/":
+                    return setRes(`${num1} / ${num2} = ${Number(num1) / Number(num2)}`)
+                case "%":
+                        return setRes(`${num1} % ${num2} = ${Number(num1) % Number(num2)}`)
+            }
         }
     
         return <>
         <form action= "">
         <h1>Calc폼</h1>
-        
         
         <label htmlFor = ""><b>Num1</b></label>
         <input type = "text" name = "num1" onChange={handleChange} /><br />

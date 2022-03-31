@@ -14,11 +14,10 @@ export default function Bmi (){
     }
     const handleClick = (e) => {
         e.preventDefault()
-        memberBmi({name,weight,height})
-        .then(res => setRes(res.data)).catch( err => console.log(`에러발생 : ${err}`))
+        setRes(`${name}님의 bmi 지수 : ${(weight *10000/height/height).toFixed(2)}`)
     }
 
-    return (<>
+    return (<div>
     <form action = "">
     <h1>Bmi폼</h1>
     
@@ -34,5 +33,5 @@ export default function Bmi (){
     <button onClick={handleClick}>BMI 체크</button>
     </form>
     <div>BMI 결과 : {res}</div>
-    </>)
+    </div>)
 }
