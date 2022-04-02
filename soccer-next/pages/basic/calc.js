@@ -11,20 +11,20 @@ export default function Calc(){
             const{value, name} = e.target;
             setInputs({ ...inputs, [name] : value})
         }
-        const handleClick = (e) =>{
-            e.preventDefault()
-            switch(opcode){
-                case "+":
-                    return setRes(`${num1} + ${num2} = ${Number(num1) + Number(num2)}`)
-                case "-":
-                    return setRes(`${num1} - ${num2} = ${Number(num1) - Number(num2)}`)
-                case "*":
-                    return setRes(`${num1} * ${num2} = ${Number(num1) * Number(num2)}`)                 
-                case "/":
-                    return setRes(`${num1} / ${num2} = ${Number(num1) / Number(num2)}`)
-                case "%":
-                        return setRes(`${num1} % ${num2} = ${Number(num1) % Number(num2)}`)
-            }
+    const handleClick = (e) =>{
+        e.preventDefault()
+        switch(opcode){
+            case "+":
+                return setRes(`${num1} + ${num2} = ${Number(num1) + Number(num2)}`)
+            case "-":
+                return setRes(`${num1} - ${num2} = ${Number(num1) - Number(num2)}`)
+            case "*":
+                return setRes(`${num1} * ${num2} = ${Number(num1) * Number(num2)}`)                 
+            case "/":
+                return setRes(`${num1} / ${num2} = ${Number(num1) / Number(num2)}`)
+            case "%":
+                   return setRes(`${num1} % ${num2} = ${Number(num1) % Number(num2)}`)
+           }
         }
     
         return <>
