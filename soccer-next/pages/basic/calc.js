@@ -1,34 +1,29 @@
 import React, { useState } from 'react' 
-
+import axios from 'axios';
 
 export default function Calc(){
-    const [inputs, setInputs] = useState({})
-    const [res, setRes] = useState('')
-    const {num1,opcode, num2} = inputs;
-    
-    const handleChange = (e) =>{
-            e.preventDefault()
-            const{value, name} = e.target;
-            setInputs({ ...inputs, [name] : value})
-        }
-    const handleClick = (e) =>{
+    const [inputs, setInputs] = useState({})    
+    const handleChange = e =>{
         e.preventDefault()
-        switch(opcode){
-            case "+":
-                return setRes(`${num1} + ${num2} = ${Number(num1) + Number(num2)}`)
-            case "-":
-                return setRes(`${num1} - ${num2} = ${Number(num1) - Number(num2)}`)
-            case "*":
-                return setRes(`${num1} * ${num2} = ${Number(num1) * Number(num2)}`)                 
-            case "/":
-                return setRes(`${num1} / ${num2} = ${Number(num1) / Number(num2)}`)
-            case "%":
-                   return setRes(`${num1} % ${num2} = ${Number(num1) % Number(num2)}`)
-           }
+        const{value, name} = e.target;
+        setInputs({ ...inputs, [name] : value})
+    }
+    const handleSubmit = e =>{
+        e.preventDefault()
+        axios.post('http://localhost:5000/api/basic/calc', inputs)
+        .then(res => {
+            const calc = res.data
+            document.getElementById('result-span').innerHTML = `
+            <h3>숫자 1 : ${calc.num1}</h3>
+            <h3>숫자 2 : ${calc.num2}</h3>
+            <h3>연산자 : ${calc.opcode}</h3>
+            `
+        })
+        .catch(err => alert(err))
         }
     
         return <>
-        <form action= "">
+        <form action= "" onSubmit={handleSubmit}>
         <h1>Calc폼</h1>
         
         <label htmlFor = ""><b>Num1</b></label>
@@ -47,8 +42,8 @@ export default function Calc(){
         <label htmlFor = ""><b>Num2</b></label>
         <input type = "text" name = "num2" onChange={handleChange} /><br />
         
-        <button onClick = {handleClick}>전송</button>
+        <input type ="submit" value="계산하기"/><br/>
         </form>
-        <div>계산결과 : {res}</div>
+        <div> 결과 : <span id="result-span"></span></div>
         </>
     }
