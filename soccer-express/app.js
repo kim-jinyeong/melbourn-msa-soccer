@@ -1,41 +1,74 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-
-var app = express();
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-
-app.use(logger('dev'));
+require('dotenv').config();
+var cors = require('cors')
+const express = require('express');
+const app = express();
+const { port, MONGO_URI } = process.env;
+app.use(express.static('public'));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors());
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+const APP = './app/routes'
+// const nodes = ['admin','basic','board','game','todo','user']
+const nodes = ['user']
+for(const leaf of nodes){
+  require(`${APP}/${leaf}.route`)({url:`/api/${leaf}`,app})
+}
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  optionsSuccessStatus: 200 
+}
+const db = require('./app/models/index')
+db.mongoose
+  .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true})
+  .then(() => {
+    console.log(' 몽고 DB 연결 설정 ')
+    console.log('db.rul', db.url)
+    console.log('db.mongoose', db.mongoose)
+    console.log('db.user.db', db.user.db)
+  })
+  .catch(err => { console.log(' 몽고DB와 연결 실패', err)
+        process.exit();
 });
+app.listen(port, () => {
+  console.log('***************** ***************** *****************')
+  console.log('***************** ***************** *****************')
+  console.log('********** 서버가 정상적으로 실행되고 있습니다 *********')
+  console.log('***************** ***************** *****************')
+  console.log('***************** ***************** *****************')
+})
+app.get('/', (req, res) => {
+  res.json({"현재 시간 : ":new Date().toLocaleString()})
+})
+app.get('/api/now', cors(corsOptions),(req, res) => {
+  res.json({"now":new Date().toLocaleString()})
+})
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+function computeCalc(payload){
+  console.log(' #### 진입  ### ')
+  const{num1, opcode, num2} = payload
+  let _num1 = Number(num1);
+  let _num2 = Number(num2);
+  const result = {num1, opcode, num2}
+  console.log(`계산중인 값들 : ${JSON.stringify(result)}`)
+  switch(opcode){
+    case "+":result.calc = _num1 + _num2; break;
+    case "-":result.calc = _num1 - _num2; break;
+    case "*":result.calc = _num1 * _num2; break;               
+    case "/":result.calc = _num1 / _num2; break;
+    case "%":result.calc = _num1 % _num2; break;
+    }
+    return result
+}
+app.post("/api/basic/calc", (req, res)=>{
+  const {num1, num2, opcode} = req.body
+  console.log(`넘어온 JSON 값 : ${JSON.stringify(req.body)}`)
+  console.log(`숫자 1 : ${num1}`)
+  console.log(`연산자 : ${opcode}`)
+  console.log(`숫자 2 : ${num2}`)
+  const json = computeCalc(req.body)
+  console.log(`계산된 JSON 값 : ${JSON.stringify(json)}`)
+  res.json(json)
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
-
-module.exports = app;
+})

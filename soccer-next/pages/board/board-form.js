@@ -3,6 +3,7 @@ import style from "board/style/board-form.module.css"
 import axios from 'axios';
 
 export default function TeamForm(){
+    const proxy = 'http://localhost:5000'
     const [inputs, setInputs] = useState({})
     const {passengerId, name, teamId, subject} = inputs;
     
@@ -12,10 +13,9 @@ export default function TeamForm(){
     }
     const handleSubmit = e => {
         e.preventDefault()
-        alert(JSON.stringify(`등록할 게시글 : ${passengerId}, ${name}, ${teamId}, ${subject}`))
-        axios.post('http://localhost:5000/api/board/write', inputs)
+        axios.post(proxy + '/api/board/write', inputs)
         .then(res => {
-            alert(res.data)
+            alert(`결과 : ${res.data.result}`)
         }) 
         .catch(err => alert(err))    
         }
@@ -65,6 +65,7 @@ export default function TeamForm(){
             <div className={style.row}>
                 <input type="submit" onClick={handleSubmit} className={style.inputSubmit} value="Submit"/>
             </div>
+            <div><span id="result-span"/></div>
             </htmlForm>
             </div>
     </>)
