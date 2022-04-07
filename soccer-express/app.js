@@ -45,22 +45,7 @@ app.get('/api/now', cors(corsOptions),(req, res) => {
   res.json({"now":new Date().toLocaleString()})
 })
 
-function computeCalc(payload){
-  console.log(' #### 진입  ### ')
-  const{num1, opcode, num2} = payload
-  let _num1 = Number(num1);
-  let _num2 = Number(num2);
-  const result = {num1, opcode, num2}
-  console.log(`계산중인 값들 : ${JSON.stringify(result)}`)
-  switch(opcode){
-    case "+":result.calc = _num1 + _num2; break;
-    case "-":result.calc = _num1 - _num2; break;
-    case "*":result.calc = _num1 * _num2; break;               
-    case "/":result.calc = _num1 / _num2; break;
-    case "%":result.calc = _num1 % _num2; break;
-    }
-    return result
-}
+
 app.post("/api/basic/calc", (req, res)=>{
   const {num1, num2, opcode} = req.body
   console.log(`넘어온 JSON 값 : ${JSON.stringify(req.body)}`)
@@ -71,4 +56,4 @@ app.post("/api/basic/calc", (req, res)=>{
   console.log(`계산된 JSON 값 : ${JSON.stringify(json)}`)
   res.json(json)
 
-})
+})        

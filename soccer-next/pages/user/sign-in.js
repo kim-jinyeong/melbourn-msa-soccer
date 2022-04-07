@@ -1,5 +1,5 @@
 import React,{useState} from 'react'
-import {Layout} from '../common';
+
 export default function Login(){
     const [inputs, setInputs] =useState({})
     const{username, password} = inputs;
@@ -13,10 +13,9 @@ export default function Login(){
         const loginRequest = {username, password}
         alert(`사용자 이름 : ${JSON.stringify(loginRequest)}`)
     }
-    return <><h1>로그인폼</h1>
-    <form>
-  
-    <div>
+    return(<>
+    <div>    
+    <h1>로그인폼</h1>
     <label><b>Username</b></label>
     <input type="text" name='username' onChange={handleChange} /><br />
 
@@ -25,13 +24,13 @@ export default function Login(){
 
     <button onClick={handleClick}>Login</button><br />
     <label><input type="checkbox" />Remember me</label><br />
-    
-    
     </div>
+    
     <div>
     <button>Cancel</button><br />
     <span>Forgot <a>password?</a></span>
     </div>
-    </form>
+
     </>
+    )
 }

@@ -13,10 +13,10 @@ export default function SignUp(){
         e.preventDefault()
         axios.post(proxy + '/api/user/signup', inputs)
         .then(res => {
-            const {name} = inputs
+            const signup = res.data
             alert(`결과: ${res.data.result}`)
             document.getElementById('result-span').innerHTML = `
-            ${name} 님의 가입이 완료되었습니다.
+            ${signup.name} 님의 가입이 완료되었습니다.
             `
         })
         .catch(err => alert(err))
