@@ -10,7 +10,7 @@ app.use(cors());
 
 const APP = './app/routes'
 // const nodes = ['admin','basic','board','game','todo','user']
-const nodes = ['user']
+const nodes = [ 'user', 'board']
 for(const leaf of nodes){
   require(`${APP}/${leaf}.route`)({url:`/api/${leaf}`,app})
 }
@@ -24,9 +24,9 @@ db.mongoose
   .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true})
   .then(() => {
     console.log(' 몽고 DB 연결 설정 ')
-    console.log('db.rul', db.url)
+    /*console.log('db.rul', db.url)
     console.log('db.mongoose', db.mongoose)
-    console.log('db.user.db', db.user.db)
+    console.log('db.user.db', db.user.db)*/
   })
   .catch(err => { console.log(' 몽고DB와 연결 실패', err)
         process.exit();
@@ -45,7 +45,7 @@ app.get('/api/now', cors(corsOptions),(req, res) => {
   res.json({"now":new Date().toLocaleString()})
 })
 
-
+/*
 app.post("/api/basic/calc", (req, res)=>{
   const {num1, num2, opcode} = req.body
   console.log(`넘어온 JSON 값 : ${JSON.stringify(req.body)}`)
@@ -57,3 +57,4 @@ app.post("/api/basic/calc", (req, res)=>{
   res.json(json)
 
 })        
+*/

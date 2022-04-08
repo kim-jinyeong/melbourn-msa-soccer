@@ -1,6 +1,10 @@
+import axios from 'axios';
+import { useEffect,useState } from 'react';
 import style from '../common/style/table.module.css'
 
+
 const Table = ({ columns, colspan, data}) => {
+   
     return (
       <table className={style.table}>
         <thead>
@@ -11,10 +15,15 @@ const Table = ({ columns, colspan, data}) => {
           </tr>
         </thead>
         <tbody>
-            <tr className={style.tr}>
                 { data.length == 0  ?<td colSpan={colspan} className={style.td}>데이터가 없습니다</td>
-                :<td colSpan={colspan} className={style.td}>데이터가 있습니다</td>}
-            </tr>
+                :data.map((user) => (
+                  <tr className={style.tr} key={user.username}>
+                  <td className={style.td}>{user.username}</td>
+                  <td className={style.td}>{user.password}</td>
+                  <td className={style.td}>{user.name}</td>
+                  <td className={style.td}>{user.telephone}</td>
+                  </tr>
+                ))}
         </tbody>
       </table>
     );
@@ -22,11 +31,18 @@ const Table = ({ columns, colspan, data}) => {
   
 export default function UserList(){
     const columns = ["Username", "Password", "Name", "Telephone"];
-    const data = []
-    const count = data.length
+    const [data, setData] = useState([])
+
+    const proxy = 'http://localhost:5000'
+
+    useEffect(() => {
+      axios.get(proxy + '/api/user/list').then(res => {
+        setData(res.data.users)
+      }).catch(err => {})
+    }, [])  
+
     return(<>
         <h1>사용자 목록</h1>  
-        {count!=0 && <h3>회원수 : {count} 명</h3>}
         <div className={style.td}>
         <Table columns={columns} colspan={columns.length} data={data}/>
         </div>

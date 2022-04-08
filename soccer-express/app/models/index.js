@@ -8,5 +8,5 @@ db.url = MONGO_URI
 
 db.user = require('./user.model')(mongoose)
 db.basic = require('./basic.model')(mongoose)
-
+db.board = require(`./board.model`)(mongoose)
 module.exports = db

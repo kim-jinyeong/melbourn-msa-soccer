@@ -5,7 +5,6 @@ import axios from 'axios';
 export default function TeamForm(){
     const proxy = 'http://localhost:5000'
     const [inputs, setInputs] = useState({})
-    const {passengerId, name, teamId, subject} = inputs;
     
     const handleChange = e => {
         const {value, name} = e.target;

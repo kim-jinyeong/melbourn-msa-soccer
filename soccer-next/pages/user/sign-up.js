@@ -11,19 +11,18 @@ export default function SignUp(){
     }
     const handleSubmit = e => { 
         e.preventDefault()
+        document.getElementById('result-span').innerHTML = `
+        ${inputs.name}님의 가입이 완료되었습니다.
+        `
         axios.post(proxy + '/api/user/signup', inputs)
         .then(res => {
-            const signup = res.data
             alert(`결과: ${res.data.result}`)
-            document.getElementById('result-span').innerHTML = `
-            ${signup.name} 님의 가입이 완료되었습니다.
-            `
         })
         .catch(err => alert(err))
     }
 
     return (<div><h1>회원가입폼</h1>
-    <form action = "" onSubmit = {handleSubmit}>
+    <form onSubmit = {handleSubmit}>
   
     <div>
     <label><b>사용자 ID</b></label>
