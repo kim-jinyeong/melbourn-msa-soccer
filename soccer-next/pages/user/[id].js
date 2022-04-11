@@ -13,7 +13,7 @@ export default function Profile(){
          
       })
     },[])
-
+    
     return (<><h1>사용자 프로필</h1>
     <div>
     <label><b>사용자 ID</b></label>
